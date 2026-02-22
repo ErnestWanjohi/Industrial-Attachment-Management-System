@@ -39,7 +39,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'supervisor') {
             <div class="card shadow-sm p-4 text-center">
                 <h5>View Assigned Students</h5>
                 <p class="text-muted">Manage internship students</p>
-                <a href="#" class="btn btn-primary">View</a>
+                <a href="assigned_students.php" class="btn btn-primary">View</a>
             </div>
         </div>
 

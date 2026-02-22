@@ -45,7 +45,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'student') {
             <div class="card shadow-sm p-4 text-center">
                 <h5>View Evaluations</h5>
                 <p class="text-muted">Check supervisor feedback</p>
-                <a href="#" class="btn btn-success">View</a>
+                <a href="evaluation.php" class="btn btn-success">View</a>
             </div>
         </div>
 
