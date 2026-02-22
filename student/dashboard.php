@@ -53,7 +53,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'student') {
             <div class="card shadow-sm p-4 text-center">
                 <h5>Attachments</h5>
                 <p class="text-muted">Manage uploaded documents</p>
-                <a href="#" class="btn btn-dark">Open</a>
+                <a href="add_attachment.php" class="btn btn-dark">Open</a>
             </div>
         </div>
 

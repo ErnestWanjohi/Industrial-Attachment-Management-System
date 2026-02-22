@@ -58,6 +58,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'supervisor') {
                 <a href="#" class="btn btn-warning">Evaluate</a>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 text-center">
+                <h5>Review Attachments</h5>
+                <p class="text-muted">Approve or reject student placements</p>
+                <a href="view_attachments.php" class="btn btn-danger">Open</a>
+        </div>
+    </div>
 
     </div>
 

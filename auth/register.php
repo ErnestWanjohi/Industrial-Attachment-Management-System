@@ -6,39 +6,122 @@ $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $role_type = $_POST["role"]; // student or supervisor
-    $name = $_POST["name"];
-    $email = $_POST["email"];
-    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+    $role_type = $_POST["role"] ?? '';
+    $name = trim($_POST["name"] ?? '');
+    $email = trim($_POST["email"] ?? '');
+    $password_raw = $_POST["password"] ?? '';
 
-    if ($role_type == "student") {
-        $reg_no = $_POST["reg_no"];
-        $course = $_POST["course"];
-
-        $sql = "INSERT INTO students (name, reg_no, email, password, course)
-                VALUES (?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssss", $name, $reg_no, $email, $password, $course);
-
-    } elseif ($role_type == "supervisor") {
-        $supervisor_role = $_POST["supervisor_role"]; // university or industry
-
-        $sql = "INSERT INTO supervisors (name, email, password, role)
-                VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssss", $name, $email, $password, $supervisor_role);
-    }
-
-    if ($stmt->execute()) {
-        $message = "<div class='alert alert-success'>Registration successful! <a href='login.php'>Login here</a></div>";
-        // Optional: redirect after 2 seconds
-        // header("refresh:2; url=login.php");
+    if (empty($role_type) || empty($name) || empty($email) || empty($password_raw)) {
+        $message = "<div class='alert alert-danger'>All fields are required.</div>";
     } else {
-        $message = "<div class='alert alert-danger'>Error: ".$stmt->error."</div>";
+
+        $password = password_hash($password_raw, PASSWORD_DEFAULT);
+
+        try {
+
+            /* ===============================
+               STUDENT REGISTRATION
+            =============================== */
+            if ($role_type == "student") {
+
+                $reg_no = trim($_POST["reg_no"] ?? '');
+                $course = trim($_POST["course"] ?? '');
+
+                if (empty($reg_no) || empty($course)) {
+                    $message = "<div class='alert alert-danger'>All student fields are required.</div>";
+                } else {
+
+                    // 🔎 Check duplicate reg_no
+                    $check = $conn->prepare("SELECT student_id FROM students WHERE reg_no = ?");
+                    $check->bind_param("s", $reg_no);
+                    $check->execute();
+                    $check->store_result();
+
+                    if ($check->num_rows > 0) {
+                        $message = "<div class='alert alert-danger'>Registration number already exists.</div>";
+                    } else {
+
+                        // 🔎 Check duplicate email
+                        $checkEmail = $conn->prepare("SELECT student_id FROM students WHERE email = ?");
+                        $checkEmail->bind_param("s", $email);
+                        $checkEmail->execute();
+                        $checkEmail->store_result();
+
+                        if ($checkEmail->num_rows > 0) {
+                            $message = "<div class='alert alert-danger'>Email already registered.</div>";
+                        } else {
+
+                            $sql = "INSERT INTO students (name, reg_no, email, password, course)
+                                    VALUES (?, ?, ?, ?, ?)";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("sssss", $name, $reg_no, $email, $password, $course);
+
+                            if ($stmt->execute()) {
+                                $message = "<div class='alert alert-success'>
+                                                Registration successful! 
+                                                <a href='login.php'>Login here</a>
+                                            </div>";
+                            } else {
+                                $message = "<div class='alert alert-danger'>Registration failed.</div>";
+                            }
+
+                            $stmt->close();
+                        }
+
+                        $checkEmail->close();
+                    }
+
+                    $check->close();
+                }
+
+            /* ===============================
+               SUPERVISOR REGISTRATION
+            =============================== */
+            } elseif ($role_type == "supervisor") {
+
+                $supervisor_role = $_POST["supervisor_role"] ?? '';
+
+                if (empty($supervisor_role)) {
+                    $message = "<div class='alert alert-danger'>Select supervisor type.</div>";
+                } else {
+
+                    // 🔎 Check duplicate email
+                    $check = $conn->prepare("SELECT supervisor_id FROM supervisors WHERE email = ?");
+                    $check->bind_param("s", $email);
+                    $check->execute();
+                    $check->store_result();
+
+                    if ($check->num_rows > 0) {
+                        $message = "<div class='alert alert-danger'>Email already registered.</div>";
+                    } else {
+
+                        $sql = "INSERT INTO supervisors (name, email, password, role)
+                                VALUES (?, ?, ?, ?)";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bind_param("ssss", $name, $email, $password, $supervisor_role);
+
+                        if ($stmt->execute()) {
+                            $message = "<div class='alert alert-success'>
+                                            Registration successful! 
+                                            <a href='login.php'>Login here</a>
+                                        </div>";
+                        } else {
+                            $message = "<div class='alert alert-danger'>Registration failed.</div>";
+                        }
+
+                        $stmt->close();
+                    }
+
+                    $check->close();
+                }
+            }
+
+        } catch (mysqli_sql_exception $e) {
+            $message = "<div class='alert alert-danger'>System error. Please try again later.</div>";
+        }
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
