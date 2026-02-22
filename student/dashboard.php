@@ -37,7 +37,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'student') {
             <div class="card shadow-sm p-4 text-center">
                 <h5>Upload Progress Report</h5>
                 <p class="text-muted">Submit your internship updates</p>
-                <a href="#" class="btn btn-primary">Upload</a>
+                <a href="progress_report.php" class="btn btn-primary">Upload</a>
             </div>
         </div>
 
@@ -54,6 +54,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'student') {
                 <h5>Attachments</h5>
                 <p class="text-muted">Manage uploaded documents</p>
                 <a href="add_attachment.php" class="btn btn-dark">Open</a>
+            </div>
+        </div>
+         <div class="col-md-4">
+            <div class="card shadow-sm p-4 text-center">
+                <h5>My Report</h5>
+                <p class="text-muted">Submitted Reports</p>
+                <a href="my_reports.php" class="btn btn-primary">Check Reports</a>
             </div>
         </div>
 

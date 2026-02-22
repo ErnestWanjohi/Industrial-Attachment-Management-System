@@ -47,7 +47,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'supervisor') {
             <div class="card shadow-sm p-4 text-center">
                 <h5>Review Progress Reports</h5>
                 <p class="text-muted">Evaluate submitted reports</p>
-                <a href="#" class="btn btn-success">Review</a>
+                <a href="review_reports.php" class="btn btn-success">Review</a>
             </div>
         </div>
 
@@ -55,7 +55,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'supervisor') {
             <div class="card shadow-sm p-4 text-center">
                 <h5>Submit Evaluations</h5>
                 <p class="text-muted">Provide performance assessment</p>
-                <a href="#" class="btn btn-warning">Evaluate</a>
+                <a href="submit_evaluation.php" class="btn btn-warning">Evaluate</a>
             </div>
         </div>
         <div class="col-md-4">
