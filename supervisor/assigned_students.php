@@ -102,7 +102,7 @@ $result = $stmt->get_result();
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="view_evaluation.php?student_id=<?= $student['student_id']; ?>" class="btn btn-sm btn-primary">
+                                    <a href="view_evaluations.php?student_id=<?= $student['student_id']; ?>" class="btn btn-sm btn-primary">
                                         View Evaluation
                                     </a>
                                 </td>
