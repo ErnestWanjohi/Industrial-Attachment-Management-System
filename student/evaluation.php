@@ -117,7 +117,7 @@ body {
         </p>
 
         <div class="text-end mt-4">
-            <a href="../downloads/My_Evaluation_Report.pdf" 
+            <a href="download_evaluation.php"
                class="btn btn-primary btn-rounded">
                Download PDF
             </a>
