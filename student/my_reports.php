@@ -54,7 +54,10 @@ body {
 </div>
 
 <?php endwhile; ?>
+
 <?php else: ?>
+
+
 
 <div class="alert alert-info">No reports submitted yet.</div>
 
