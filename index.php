@@ -26,11 +26,15 @@ if (isset($_SESSION['user_role'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: #f8f9fa;
+            background-image: url('sak.jpeg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
         }
         .card {
             max-width: 500px;
-            margin: 100px auto;
+            margin:100px auto;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
@@ -42,6 +46,14 @@ if (isset($_SESSION['user_role'])) {
             margin-bottom: 30px;
             font-weight: 700;
         }
+        .about-section {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
     </style>
 </head>
 <body>
@@ -58,6 +70,18 @@ if (isset($_SESSION['user_role'])) {
             <p>Don't have an account? <a href="auth/register.php">Register here</a></p>
         </div>
     </div>
+    <div class="about-section text-center">
+    <h3>About IAMS</h3>
+   <p>
+            The Industrial Attachment Management System (IAMS) is a platform designed to streamline 
+            the management of student attachments. It allows students to track their progress, 
+            supervisors to evaluate performance, and administrators to manage the entire process efficiently.
+        </p>
+        <p>
+            Our goal is to simplify communication, improve transparency, and ensure a smooth 
+            attachment experience for all users.
+        </p>
+</div>
 </div>
 
 </body>
