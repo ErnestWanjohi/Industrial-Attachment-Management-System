@@ -9,58 +9,114 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'student') {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Student Dashboard - IAMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8fafc;
+        }
+
+        .sidebar {
+            height: 100vh;
+            background-color: #1e293b;
+            color: white;
+            padding-top: 20px;
+            position: fixed;
+            width: 240px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #cbd5f5;
+            padding: 12px 20px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background-color: #334155;
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 240px;
+            padding: 20px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            transition: 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .topbar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
-<body class="bg-light">
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-        <span class="navbar-brand">IAMS - Student</span>
-        <div>
-            <span class="text-white me-3">
-                Welcome, <?php echo $_SESSION['name']; ?>
-            </span>
-            <a href="../auth/logout.php" class="btn btn-light btn-sm">Logout</a>
-        </div>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h5 class="text-center mb-4">IAMS</h5>
+
+    <a href="#">Dashboard</a>
+    <a href="progress_report.php">Upload Progress Report</a>
+    <a href="evaluation.php">View Evaluations</a>
+    <a href="add_attachment.php">Attachments</a>
+    <a href="my_reports.php">My Reports</a>
+    <a href="../auth/logout.php" class="text-danger">Logout</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+    <!-- Topbar -->
+    <div class="topbar d-flex justify-content-between align-items-center shadow-sm">
+        <h5 class="mb-0">Student Dashboard</h5>
+        <span class="fw-semibold">👋 <?php echo $_SESSION['name']; ?></span>
     </div>
-</nav>
 
-<div class="container mt-5">
-
+    <!-- Info Cards (NO BUTTONS) -->
     <div class="row g-4">
 
         <div class="col-md-4">
             <div class="card shadow-sm p-4 text-center">
                 <h5>Upload Progress Report</h5>
-                <p class="text-muted">Submit your internship updates</p>
-                <a href="progress_report.php" class="btn btn-primary">Upload</a>
+                <p class="text-muted">Submit your internship updates via sidebar</p>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="card shadow-sm p-4 text-center">
                 <h5>View Evaluations</h5>
-                <p class="text-muted">Check supervisor feedback</p>
-                <a href="evaluation.php" class="btn btn-success">View</a>
+                <p class="text-muted">Check supervisor feedback via sidebar</p>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="card shadow-sm p-4 text-center">
                 <h5>Attachments</h5>
-                <p class="text-muted">Manage uploaded documents</p>
-                <a href="add_attachment.php" class="btn btn-dark">Open</a>
+                <p class="text-muted">Manage uploaded documents via sidebar</p>
             </div>
         </div>
-         <div class="col-md-4">
+
+        <div class="col-md-4">
             <div class="card shadow-sm p-4 text-center">
-                <h5>My Report</h5>
-                <p class="text-muted">Submitted Reports</p>
-                <a href="my_reports.php" class="btn btn-primary">Check Reports</a>
+                <h5>My Reports</h5>
+                <p class="text-muted">View all submitted reports via sidebar</p>
             </div>
         </div>
 
