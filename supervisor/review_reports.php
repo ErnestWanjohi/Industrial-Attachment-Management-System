@@ -2,6 +2,7 @@
 session_start();
 include("../config/db.php");
 
+// 🔐 Restrict access to supervisors only
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'supervisor') {
     header("Location: ../auth/login.php");
     exit();
@@ -22,23 +23,11 @@ if (isset($_POST['report_id'])) {
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sii", $comment, $report_id, $supervisor_id);
+
     if ($stmt->execute()) {
         $message = "<div class='alert alert-success'>Comment saved successfully.</div>";
     }
-    $stmt->close();
-}
 
-// =================== Handle Delete Report ===================
-if (isset($_GET['delete'])) {
-    $report_id = intval($_GET['delete']);
-    $sql = "DELETE pr FROM progress_reports pr
-            JOIN attachments a ON pr.student_id = a.student_id
-            WHERE pr.report_id = ? AND a.supervisor_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $report_id, $supervisor_id);
-    if ($stmt->execute()) {
-        $message = "<div class='alert alert-success'>Report deleted successfully.</div>";
-    }
     $stmt->close();
 }
 
@@ -81,17 +70,17 @@ $result = $stmt->get_result();
         <h5><?= htmlspecialchars($row['name']); ?> - Week <?= $row['week_number']; ?></h5>
 
         <p><strong>Tasks Done:</strong><br>
-            <?= nl2br(htmlspecialchars($row['tasks_done'])); ?></p>
+            <?= nl2br(htmlspecialchars($row['tasks_done'])); ?>
+        </p>
 
-        <!-- =================== Supervisor Comment Form =================== -->
+        <!-- =================== Supervisor Comment =================== -->
         <form method="POST" class="mb-2 comment-container" id="form-<?= $row['report_id']; ?>">
             <input type="hidden" name="report_id" value="<?= $row['report_id']; ?>">
 
             <div class="mb-2 position-relative">
                 <label>Supervisor Comment</label>
                 <textarea name="supervisor_comments"
-                          class="form-control comment-box"
-                          id="comment-<?= $row['report_id']; ?>"
+                          class="form-control"
                           rows="3"><?= htmlspecialchars($row['supervisor_comments']); ?></textarea>
 
                 <?php if ($row['supervisor_comments']): ?>
@@ -99,19 +88,16 @@ $result = $stmt->get_result();
                 <?php endif; ?>
             </div>
 
-            <button type="button"
-                    class="btn btn-primary btn-sm comment-btn"
-                    data-report-id="<?= $row['report_id']; ?>">
+            <button type="submit" class="btn btn-primary btn-sm">
                 <?= $row['supervisor_comments'] ? 'Update Comment' : 'Add Comment'; ?>
             </button>
         </form>
 
-        <!-- =================== Edit / Delete / PDF Buttons =================== -->
+        <!-- =================== Export PDF Only =================== -->
         <div class="mb-2">
-            <a href="edit_report.php?id=<?= $row['report_id']; ?>" class="btn btn-warning btn-sm">Edit Report</a>
-            <a href="?delete=<?= $row['report_id']; ?>" class="btn btn-danger btn-sm"
-               onclick="return confirm('Are you sure you want to delete this report?');">Delete Report</a>
-            <a href="export_report_pdf.php?id=<?= $row['report_id']; ?>" class="btn btn-success btn-sm">Export PDF</a>
+            <a href="export_report_pdf.php?id=<?= $row['report_id']; ?>" class="btn btn-success btn-sm">
+                Export PDF
+            </a>
         </div>
 
         <small class="text-muted">Submitted: <?= $row['date_submitted']; ?></small>
@@ -119,17 +105,5 @@ $result = $stmt->get_result();
     <?php endwhile; ?>
 
 </div>
-
-<!-- =================== JS for Comment Submit =================== -->
-<script>
-document.querySelectorAll('.comment-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        const reportId = this.dataset.reportId;
-        const form = document.getElementById('form-' + reportId);
-        form.submit(); // submit form normally
-    });
-});
-</script>
-
 </body>
 </html>
